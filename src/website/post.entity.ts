@@ -10,17 +10,17 @@ import {
 @Entity()
 export class Post extends BaseEntity {
   @PrimaryGeneratedColumn({ unsigned: true })
-  id: number;
+  id: number; // Columna que representa el ID único del post, generado automáticamente y sin signo.
 
   @Column()
-  title: string;
+  title: string; // Columna que almacena el título del post.
 
   @Column({ type: 'text' })
-  body: string;
+  body: string; // Columna que almacena el contenido del post.
 
   @CreateDateColumn({ type: 'timestamp' })
-  created_at: Date;
+  created_at: Date; // Columna que almacena la fecha y hora en que se creó el post, se genera automáticamente.
 
   @UpdateDateColumn({ type: 'timestamp' })
-  updated_at: Date;
+  updated_at: Date; // Columna que almacena la fecha y hora en que se actualizó el post por última vez, se actualiza automáticamente.
 }

@@ -6,6 +6,7 @@ import * as sha1 from 'js-sha1';
 import { getRepository } from 'typeorm';
 
 export class Misc {
+  // Método para restar una cantidad de monedas de la cuenta de un usuario
   static async setCoin(coin: number, accountId: number): Promise<void> {
     const accountInformationRepo = getRepository(
       AccountInformation,
@@ -22,8 +23,9 @@ export class Misc {
 
     accountInformation.coins -= coin;
     await accountInformationRepo.save(accountInformation);
-  }
+  } // Método para restar una cantidad de monedas de la cuenta de un usuario. Recibe la cantidad de monedas y el ID de la cuenta. Verifica si la cuenta existe y si tiene suficientes monedas. Si no, lanza una excepción. Si tiene suficientes monedas, las resta y guarda la información actualizada en la base de datos.
 
+  // Método para calcular el verificador SRP6
   static calculateSRP6Verifier(
     username: string,
     password: string,
@@ -59,8 +61,9 @@ export class Misc {
     }
 
     return verifier;
-  }
+  } // Método para calcular el verificador SRP6. Recibe el nombre de usuario, la contraseña y opcionalmente la sal. Si no se proporciona la sal, genera una nueva. Calcula el verificador utilizando el algoritmo SRP6 y devuelve el verificador como un Buffer.
 
+  // Método para obtener los datos de registro SRP6
   static GetSRP6RegistrationData(
     username: string,
     password: string,
@@ -70,8 +73,9 @@ export class Misc {
     const verifier = this.calculateSRP6Verifier(username, password, salt);
 
     return [salt, verifier];
-  }
+  } // Método para obtener los datos de registro SRP6. Recibe el nombre de usuario y la contraseña. Genera una nueva sal y calcula el verificador SRP6. Devuelve un array con la sal y el verificador.
 
+  // Método para verificar el verificador SRP6
   static verifySRP6(
     username: string,
     password: string,
@@ -85,5 +89,5 @@ export class Misc {
     );
 
     return Buffer.compare(generated, verifier) === 0 ? true : false;
-  }
+  } // Método para verificar el verificador SRP6. Recibe el nombre de usuario, la contraseña, la sal y el verificador. Calcula el verificador utilizando el algoritmo SRP6 y lo compara con el verificador proporcionado. Devuelve true si coinciden y false si no.
 }

@@ -15,14 +15,17 @@ import { getRepository } from 'typeorm';
 export class AuthGuard implements CanActivate {
   private decoded: any;
 
+  // Método que determina si se permite o no la activación de una ruta
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = context.switchToHttp().getRequest();
-    return await this.validateToken(request);
-  }
+    const request = context.switchToHttp().getRequest(); // Obtiene el objeto de solicitud HTTP
+    return await this.validateToken(request); // Valida el token de la solicitud
+  } // Método que determina si se permite o no la activación de una ruta. Obtiene el objeto de solicitud HTTP y llama al método validateToken para validar el token de la solicitud.
 
+  // Método privado para validar el token de la solicitud
   private async validateToken(request: any): Promise<boolean> {
     let token: string;
 
+    // Obtiene el token de los encabezados de autorización o de las cookies
     if (
       request.headers.authorization &&
       request.headers.authorization.startsWith('Bearer')
@@ -32,12 +35,14 @@ export class AuthGuard implements CanActivate {
       token = request.cookies.jwt;
     }
 
+    // Si no hay token, lanza una excepción de no autorizado
     if (!token) {
       throw new UnauthorizedException([
         'You are not logged in! Please log in to get access.',
       ]);
     }
 
+    // Verifica el token y maneja posibles errores
     try {
       this.decoded = verify(token, process.env.JWT_SECRET_KEY);
     } catch (error) {
@@ -60,6 +65,7 @@ export class AuthGuard implements CanActivate {
       }
     }
 
+    // Verifica si la cuenta existe en la base de datos
     const accountExists = await getRepository(
       Account,
       'authConnection',
@@ -76,6 +82,7 @@ export class AuthGuard implements CanActivate {
     delete accountExists.salt;
     delete accountExists.verifier;
 
+    // Verifica si la contraseña ha sido cambiada recientemente
     const accountPassword = await getRepository(
       AccountPassword,
       'authConnection',
@@ -98,6 +105,7 @@ export class AuthGuard implements CanActivate {
       }
     }
 
+    // Obtiene la información de la cuenta y la agrega a la solicitud
     const accountInformation = await getRepository(
       AccountInformation,
       'authConnection',
@@ -107,6 +115,6 @@ export class AuthGuard implements CanActivate {
 
     request.account = { ...accountExists, ...accountInformation };
 
-    return true;
-  }
+    return true; // Permite la activación de la ruta
+  } // Método privado para validar el token de la solicitud. Obtiene el token de los encabezados de autorización o de las cookies. Si no hay token, lanza una excepción de no autorizado. Verifica el token y maneja posibles errores. Verifica si la cuenta existe en la base de datos. Si la contraseña ha sido cambiada recientemente, lanza una excepción de no autorizado. Obtiene la información de la cuenta y la agrega a la solicitud. Si todo es válido, permite la activación de la ruta.
 }
