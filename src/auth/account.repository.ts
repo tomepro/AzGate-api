@@ -32,6 +32,7 @@ export class AccountRepository extends Repository<Account> {
 
   private accountBannedRepo = getRepository(AccountBanned, 'authConnection');
 
+  // Método para registrar una nueva cuenta
   async signUp(accountDto: AccountDto, response: Response): Promise<void> {
     const {
       username,
@@ -76,7 +77,7 @@ export class AccountRepository extends Repository<Account> {
       accountInformation.phone = phone;
       await this.accountInformationRepo.save(accountInformation);
 
-      AccountRepository.createToken(account, HttpStatus.CREATED, response);
+      AccountRepository.createToken(account, HttpStatus.CREATED, response); // Finalmente, crea un token JWT y lo envía en la respuesta.
     } catch (error) {
       if (error.code === 'ER_DUP_ENTRY') {
         throw new ConflictException(['Username already exists']);
@@ -86,8 +87,9 @@ export class AccountRepository extends Repository<Account> {
         ]);
       }
     }
-  }
+  } // Método para registrar una nueva cuenta. Recibe un objeto AccountDto con los datos de la cuenta y un objeto Response para enviar la respuesta. Verifica si el correo electrónico o el teléfono ya existen, y si las contraseñas coinciden. Luego, crea una nueva cuenta y guarda la información de la cuenta en la base de datos.
 
+  // Método para iniciar sesión
   async signIn(accountDto: AccountDto, response: Response): Promise<void> {
     const { username, password } = accountDto;
     const account = await this.findOne({ where: { username } });
@@ -99,9 +101,10 @@ export class AccountRepository extends Repository<Account> {
       throw new UnauthorizedException(['Incorrect username or password']);
     }
 
-    AccountRepository.createToken(account, HttpStatus.OK, response);
-  }
+    AccountRepository.createToken(account, HttpStatus.OK, response); // Si son correctos, crea un token JWT y lo envía en la respuesta.
+  } // Método para iniciar sesión. Recibe un objeto AccountDto con los datos de la cuenta y un objeto Response para enviar la respuesta. Verifica si el nombre de usuario y la contraseña son correctos.
 
+  // Método para actualizar la contraseña
   async updatePassword(
     accountPasswordDto: AccountPasswordDto,
     response: Response,
@@ -138,9 +141,10 @@ export class AccountRepository extends Repository<Account> {
     accountPassword.password_changed_at = new Date(Date.now() - 1000);
     await this.accountPasswordRepo.save(accountPassword);
 
-    AccountRepository.createToken(account, HttpStatus.OK, response);
-  }
+    AccountRepository.createToken(account, HttpStatus.OK, response); // Luego, actualiza la contraseña en la base de datos y crea un token JWT que se envía en la respuesta.
+  } // Método para actualizar la contraseña. Recibe un objeto AccountPasswordDto con los datos de la nueva contraseña, un objeto Response para enviar la respuesta y el accountId de la cuenta a actualizar. Verifica si la contraseña actual es correcta y si las nuevas contraseñas coinciden.
 
+  // Método para actualizar el correo electrónico
   async updateEmail(emailDto: EmailDto, accountId: number) {
     const { password, emailCurrent, email, emailConfirm } = emailDto;
     const account = await this.findOne({ where: { id: accountId } });
@@ -175,8 +179,9 @@ export class AccountRepository extends Repository<Account> {
       status: 'success',
       message: ['Your email has been changed successfully!'],
     };
-  }
+  } // Método para actualizar el correo electrónico. Recibe un objeto EmailDto con los datos del nuevo correo electrónico y el accountId de la cuenta a actualizar. Verifica si el correo electrónico actual es correcto, si las nuevas direcciones de correo electrónico coinciden y si la contraseña es correcta. Luego, actualiza el correo electrónico en la base de datos y devuelve un mensaje de éxito.
 
+  // Método para desbanear una cuenta
   async unban(accountId: number) {
     const accountBanned = await this.accountBannedRepo.findOne({
       where: { id: accountId, active: 1 },
@@ -192,8 +197,9 @@ export class AccountRepository extends Repository<Account> {
     await this.accountBannedRepo.save(accountBanned);
 
     return { status: 'success' };
-  }
+  } // Método para desbanear una cuenta. Recibe el accountId de la cuenta a desbanear. Verifica si la cuenta está baneada. Si está baneada, desactiva el baneo y devuelve un mensaje de éxito.
 
+  // Método para crear un token JWT
   private static createToken(
     account: any,
     statusCode: number,
@@ -207,5 +213,5 @@ export class AccountRepository extends Repository<Account> {
     delete account.verifier;
 
     response.status(statusCode).json({ status: 'success', token, account });
-  }
+  } // Método para crear un token JWT. Recibe la cuenta, el código de estado y el objeto Response para enviar la respuesta. Crea un token JWT con el id de la cuenta y lo envía en la respuesta junto con la cuenta.
 }
