@@ -3,7 +3,7 @@ version: "3.8"
 services:
   #nestJS api
   ac-api:
-    image: azerothcore/api
+    image: azerothcore/api 
     restart: unless-stopped
     build:
       context: .
