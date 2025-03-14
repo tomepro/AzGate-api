@@ -1,9 +1,9 @@
 {
-  "moduleFileExtensions": ["js", "json", "ts"],
-  "rootDir": ".",
-  "testEnvironment": "node",
-  "testRegex": ".e2e-spec.ts$",
+  "moduleFileExtensions": ["js", "json", "ts"], // Extensiones de archivo que Jest reconocerá y procesará.
+  "rootDir": ".", // Directorio raíz desde el cual Jest buscará archivos de prueba.
+  "testEnvironment": "node", // Entorno de prueba que se utilizará. En este caso, se utiliza Node.js.
+  "testRegex": ".e2e-spec.ts$", // Expresión regular que Jest utilizará para encontrar archivos de prueba end-to-end (e2e).
   "transform": {
-    "^.+\\.(t|j)s$": "ts-jest"
+    "^.+\\.(t|j)s$": "ts-jest" // Transformación que Jest aplicará a los archivos TypeScript y JavaScript utilizando ts-jest.
   }
 }

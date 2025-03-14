@@ -1,16 +1,16 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "declaration": true,
-    "removeComments": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "es2017",
-    "sourceMap": true,
-    "outDir": "./dist",
-    "baseUrl": "./",
-    "incremental": true,
-    "allowJs": true
+    "module": "commonjs", // Especifica el sistema de módulos que se utilizará. En este caso, CommonJS.
+    "declaration": true, // Genera archivos de declaración (.d.ts) para los archivos TypeScript.
+    "removeComments": true, // Elimina los comentarios del código compilado.
+    "emitDecoratorMetadata": true, // Emite metadatos para los decoradores.
+    "experimentalDecorators": true, // Habilita el soporte para decoradores experimentales.
+    "allowSyntheticDefaultImports": true, // Permite importaciones por defecto sintéticas.
+    "target": "es2017", // Especifica la versión de ECMAScript de destino para la compilación.
+    "sourceMap": true, // Genera archivos de mapa de origen (.map) para el código compilado.
+    "outDir": "./dist", // Especifica el directorio de salida para los archivos compilados.
+    "baseUrl": "./", // Especifica la base URL para resolver rutas de módulos.
+    "incremental": true, // Habilita la compilación incremental para mejorar los tiempos de compilación.
+    "allowJs": true // Permite compilar archivos JavaScript junto con archivos TypeScript.
   }
 }
