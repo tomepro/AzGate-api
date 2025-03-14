@@ -1,4 +1,4 @@
 {
-  "collection": "@nestjs/schematics", // Especifica la colección de esquemas que se utilizará para generar y modificar archivos de NestJS.
-  "sourceRoot": "src" // Define el directorio raíz donde se encuentra el código fuente de la aplicación.
+  "collection": "@nestjs/schematics", 
+  "sourceRoot": "src" 
 }
